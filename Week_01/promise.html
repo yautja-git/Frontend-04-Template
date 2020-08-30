@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>红绿灯切换,promise版</title>
+    <style>
+        div {
+            height: 100px;
+            width: 100px;
+            background-color: gray;
+            border: 1px solid #fff;
+            display: inline-block;
+            margin: 20px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="green"></div>
+    <div id="yellow"></div>
+    <div id="red"></div>
+    <script>
+        function changeColor(color) {
+            for (let i = 0; i < 3; i++) {
+                document.querySelectorAll('div')[i].style.backgroundColor = 'gray'
+            }
+            document.getElementById(color).style.backgroundColor = color
+        }
+
+        function sleep(color, time) {
+            changeColor(color)
+            return new Promise((resolve, reject) => {
+                setTimeout(resolve, time)
+                console.log(color, new Date());
+            })
+        }
+        function go() {
+            sleep('green', 3000)
+                .then(() => {
+                    return sleep('yellow', 4000)
+                })
+                .then(() => {
+                    return sleep('red', 8000)
+                })
+                .then(go)
+        }
+        go()
+
+    </script>
+</body>
+
+</html>
